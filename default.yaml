@@ -1,0 +1,18 @@
+seed: 42
+horizon: 28              # forecast days
+n_folds: 6               # rolling-origin backtest folds (non-overlapping, most recent last)
+calibration_folds: 2     # oldest folds are used to calibrate prediction intervals
+interval: [0.1, 0.9]     # nominal 80% prediction interval
+artifacts_dir: artifacts
+
+data:                    # seeded synthetic retail demand (see data.py)
+  n_series: 20
+  n_days: 1095
+  start_date: "2023-01-01"
+
+gbm:
+  max_iter: 300
+  learning_rate: 0.05
+  max_leaf_nodes: 31
+  min_samples_leaf: 40
+  l2_regularization: 1.0

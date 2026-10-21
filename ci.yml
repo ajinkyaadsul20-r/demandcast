@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: pip install -e ".[api,dev]"
+      - run: ruff check .
+      - run: ruff format --check .
+      - run: mypy src
+      - run: pytest --cov=demandcast --cov-report=xml
+      - uses: actions/upload-artifact@v4
+        if: matrix.python-version == '3.12'
+        with:
+          name: coverage
+          path: coverage.xml
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t demandcast:ci .
+      - name: Smoke-test container
+        run: |
+          docker run -d --name api -p 8000:8000 demandcast:ci
+          for i in $(seq 1 20); do curl -sf localhost:8000/health && break || sleep 2; done
+          curl -sf "localhost:8000/forecast/store_00?horizon=7" > /dev/null

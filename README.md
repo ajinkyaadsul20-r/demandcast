@@ -1,6 +1,6 @@
 # demandcast
 
-[![CI](https://github.com/YOUR_USERNAME/demandcast/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/demandcast/actions)
+[![CI](https://github.com/ajinkyaadsul20-r/demandcast/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/demandcast/actions)
 ![Python](https://img.shields.io/badge/python-3.10%20|%203.11%20|%203.12-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
